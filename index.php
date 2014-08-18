@@ -37,7 +37,8 @@ if ( ! empty( $request ) ) {
 			include_once 'controllers/admin/admin_controller.php';
 			$request = substr( $request, strlen( 'admin/' ) );
 		}
-		var_dump($request);
+		
+		
 		// Fetch the controller, method and params if any
 		$components = explode( DX_DS, $request, 3 );
 

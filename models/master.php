@@ -33,7 +33,27 @@ class Master_Model {
 	}
 	
 	public function get( $id ) {}
-	public function add( $element ) {}
+	public function add( $pairs ) {
+		// Get keys and values separately
+		$keys = array_keys( $pairs );
+		$values = array();
+		
+		// Escape values, like prepared statement
+		foreach( $pairs as $key => $value ) {
+			$values[] = "'" . $this->dbconn->real_escape_string( $value ) . "'";	
+		}
+		
+		$keys = implode( $keys, ',' );
+		$values = implode( $values, ',' );
+		
+		$query = "insert into {$this->table}($keys) values($values)";
+		
+// 		var_dump($query);
+		
+		$this->dbconn->query( $query );
+		
+		return $this->dbconn->affected_rows;
+	}
 	public function delete( $element ) {}
 	
 	public function find( $args = array() ) {
@@ -56,8 +76,6 @@ class Master_Model {
 		if( ! empty( $limit ) ) {
 			$query .= ' limit ' . $limit;
 		}
-		
-		var_dump($query);
 		
 		$result_set = $this->dbconn->query( $query );
 		

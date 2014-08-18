@@ -9,7 +9,7 @@ class Artists_Controller extends Master_Controller {
 	public function __construct() {
 		parent::__construct( get_class(), 'artist', '/views/artists/' );
 		// $this->model = new \Models\Artist();
-		echo "Artist Controller created<br />";
+// 		echo "Artist Controller created<br />";
 	}
 	
 	public function alabala() {

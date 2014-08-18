@@ -7,12 +7,10 @@ class Database {
 	private static $db = null;
 	
 	private function __construct() {
-		var_dump('Database connected. <br />');
-		
 		$host = 'localhost';
 		$username = 'root';
 		$password = '';
-		$database = 'sample';
+		$database = '';
 		
 		$db = new \mysqli( $host, $username, $password, $database );
 		
@@ -33,5 +31,3 @@ class Database {
 		return self::$db;
 	}
 }
-
-var_dump('db called');
