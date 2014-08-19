@@ -17,6 +17,10 @@ class Artists_Controller extends Master_Controller {
 	}
 	
 	public function index() {
-		echo "index for artists() <br />";
+		$artists = $this->model->find();
+		
+		$template_file = DX_ROOT_DIR . $this->views_dir . 'index.php';
+		
+		include_once DX_ROOT_DIR . '/views/layouts/' . $this->layout;
 	}
 }

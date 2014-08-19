@@ -11,11 +11,11 @@ class Master_Model {
 	protected $dbconn;
 	
 	public function __construct( $args = array() ) {
-		$args = array_merge( $args, array(
+		$args = array_merge( array(
 			'where' => '',
 			'columns' => '*',
 			'limit' => 0
-		) );
+		), $args );
 		
 		if ( ! isset( $args['table'] ) ) {
 			die( 'Table not defined. Please define a model table.' );
@@ -32,7 +32,12 @@ class Master_Model {
 		$this->dbconn = $db::get_db();
 	}
 	
-	public function get( $id ) {}
+	public function get( $id ) {
+		$results = $this->find( array( 'where' => 'id = ' .$id ) );
+		
+		return $results;
+	}
+	
 	public function add( $pairs ) {
 		// Get keys and values separately
 		$keys = array_keys( $pairs );
@@ -54,16 +59,37 @@ class Master_Model {
 		
 		return $this->dbconn->affected_rows;
 	}
-	public function delete( $element ) {}
+	
+	public function delete( $id ) {
+		$query = "DELETE FROM {$this->table} WHERE id=" . intval( $id );
+		
+		$this->dbconn->query( $query );
+		
+		return $this->dbconn->affected_rows;
+	}
+	
+	public function update( $model ) {
+		$query = "UPDATE " . $this->table . " SET ";
+		
+		foreach( $model as $key => $value ) {
+			if( $key === 'id' ) continue;
+			$query .= "$key = '" . $this->dbconn->real_escape_string( $value ) . "',"; 
+		}
+		$query = rtrim( $query, "," );
+		$query .= " WHERE id = " . $model['id'];
+
+		$this->dbconn->query( $query );
+		
+		return $this->dbconn->affected_rows;
+	}
 	
 	public function find( $args = array() ) {
-			
-		$args = array_merge( $args, array(
+		$args = array_merge( array(
 			'table' => $this->table,
 			'where' => '',
 			'columns' => '*',
 			'limit' => 0
-		) );
+		), $args );
 		
 		extract( $args );
 		
@@ -76,6 +102,8 @@ class Master_Model {
 		if( ! empty( $limit ) ) {
 			$query .= ' limit ' . $limit;
 		}
+		
+// 		var_dump($query);
 		
 		$result_set = $this->dbconn->query( $query );
 		

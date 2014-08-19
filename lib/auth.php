@@ -7,6 +7,8 @@ class Auth {
 	private static $session = null;
 	
 	private function __construct() {
+		// Session lifetime = 30min
+		session_set_cookie_params(1800,"/");
 		session_start();
 	}
 	
@@ -20,7 +22,7 @@ class Auth {
 		return $instance;
 	}
 	
-	public function validate_session() {
+	public function is_logged_in() {
 		if ( isset( $_SESSION['username'] ) ) {
 			return true;
 		}
@@ -41,8 +43,8 @@ class Auth {
 		
 		if ( $row = $result_set->fetch_assoc() ) {
 			$_SESSION['username'] = $username;
-			$_SESSION['id'] = $row['id'];
-			
+			$_SESSION['user_id'] = $row['id'];
+
 			return true;
 		}
 		
@@ -50,14 +52,18 @@ class Auth {
 	}
 	
 	public function logout( ) {
-		
+		session_destroy();
 	} 
 	
-	public function get_username() {
+	public function get_logged_user() {
 		if ( ! isset( $_SESSION['username'] )  ) {
-			return '';
+			return array();
 		}
-		return $_SESSION['username'];
+		
+		return array( 
+				'username' => $_SESSION['username'], 
+				'user_id' => $_SESSION['user_id'] 
+		);
 		
 	}
 }

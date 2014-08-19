@@ -1,8 +1,3 @@
-<p><?php
-	if( ! empty( $username ) ) {
-		echo "Hi, $username!";
-	}
-?></p>
 <p><?php echo $login_text; ?></p>
 <form method="POST">
 	<p>

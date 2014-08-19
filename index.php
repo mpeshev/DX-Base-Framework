@@ -4,7 +4,10 @@
 define( 'DX_DS', DIRECTORY_SEPARATOR );
 define( 'DX_ROOT_DIR', dirname( __FILE__ ) . DX_DS );
 define( 'DX_ROOT_PATH', basename( dirname( __FILE__ ) ) . DX_DS );
-define( 'DX_ROOT_URL', $_SERVER['HTTP_HOST'] );
+define( 'DX_ROOT_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/cframe/' );
+
+// Bootstrap
+include 'config/bootstrap.php';
 
 // Define the request home that will always persist in REQUEST_URI
 $request_home = DX_DS . DX_ROOT_PATH;
@@ -66,7 +69,7 @@ if ( isset( $controller ) && file_exists( 'controllers/' . $controller . '.php' 
 	
 	// Call the object and the method
 	if( method_exists( $instance, $method ) ) {
-		call_user_func_array( array( $instance, $method ), $param );
+		call_user_func_array( array( $instance, $method ), array( $param ) );
 		
 // 		$instance->$method();
 	} else {
@@ -77,6 +80,7 @@ if ( isset( $controller ) && file_exists( 'controllers/' . $controller . '.php' 
 
 	$master_controller->home();
 }
+// \Lib\Auth::get_instance()->logout();
 
 // TEST PLAYGROUND
 /* include_once 'models/artist.php';

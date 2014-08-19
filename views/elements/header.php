@@ -11,4 +11,12 @@
 					<li>Menu 2</li>
 				</ul>
 			</div>
+			<?php if( ! empty( $this->logged_user ) ): ?>
+				<div id="user_center">
+					<p>
+						Welcome, <?php echo $this->logged_user['username']; ?>!
+						<a href="<?php echo DX_ROOT_URL; ?>login/logout">[Logout]</a>
+					</p>
+				</div>
+			<?php endif; ?>
 			<div id="main">
